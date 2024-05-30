@@ -13,7 +13,7 @@ const pages: Page[] = [
     component: <Home />
   },
   {
-    label: 'Charts',
+    label: 'Insights',
     icon: <FaChartPie />,
     component: <Charts />
   }
