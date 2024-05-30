@@ -14,7 +14,7 @@ export default function DoctorsPage() {
 
   return <div className="d-flex flex-column px-3 py-4 bg-white rounded shadow-sm overflow-hidden">
     <div className="d-flex gap-5">
-      <div className="w-50" style={{ minHeight: 500 }}>
+      <div className="w-50" style={{ minHeight: 400 }}>
         <h5>Doctors {division ? `(${division})` : ''}</h5>
 
         <Table
@@ -42,7 +42,7 @@ export default function DoctorsPage() {
           filters={division ? [filterFactory.equals(Divisions.Divison_name, division)] : []} />
       </div>
 
-      <div style={{ width: 450 }} >
+      <div style={{ width: 400, height: 400 }} >
         <h5>Cases per Division</h5>
 
         <PieChart
