@@ -1,16 +1,28 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
-import Charts from './pages/Charts';
-import Sidebar, { Page } from './components/Sidebar';
-import Home from './pages/Home';
 import { useState } from 'react';
-import { FaChartPie, FaHouse } from 'react-icons/fa6';
+import { FaChartPie, FaClipboardUser, FaHouse, FaUsers } from 'react-icons/fa6';
+import './App.css';
+import Sidebar, { Page } from './components/Sidebar';
+import Charts from './pages/Charts';
+import DiagnosisPage from './pages/DiagnosisPage';
+import DoctorsPage from './pages/DoctorsPage';
+import Home from './pages/Home';
 
 const pages: Page[] = [
   {
     label: 'Home',
     icon: <FaHouse />,
     component: <Home />
+  },
+  {
+    label: 'Diagnosis',
+    icon: <FaClipboardUser />,
+    component: <DiagnosisPage />
+  },
+  {
+    label: 'Doctors',
+    icon: <FaUsers />,
+    component: <DoctorsPage />
   },
   {
     label: 'Charts',

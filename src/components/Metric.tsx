@@ -3,11 +3,11 @@ import { FaArrowDown, FaArrowUp } from 'react-icons/fa6';
 
 type Props = {
   title: string;
-  value: string;
+  value: string | number;
 
   secondary: {
     title: string;
-    value: string;
+    value: string | number;
     positive: boolean;
   }
 }
@@ -21,7 +21,7 @@ export default function Metric({ title, value, secondary }: Props) {
 
     <div className="mt-1 d-flex align-items-center">
       <div className={cx('body-s', { 'text-danger': !secondary.positive, 'text-success': secondary.positive })}>
-        {secondary.value}
+        {secondary.positive ? '+' : ''}{secondary.value}
       </div>
 
       <div className={cx('body-xs ms-1', { 'text-danger': !secondary.positive, 'text-success': secondary.positive })}>
