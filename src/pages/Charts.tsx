@@ -10,11 +10,11 @@ export default function Charts() {
       <div className="w-50">
         <h3>Admissions per room</h3>
 
-        <LineChart
+        <BarChart
           dataSet={DataSource}
           dataOptions={{
             category: [Rooms.Room_number],
-            value: [measureFactory.count(Admissions.ID, 'Total')],
+            value: [measureFactory.count(Admissions.ID, 'Total').sort(2)],
             breakBy: []
           }}
         />
