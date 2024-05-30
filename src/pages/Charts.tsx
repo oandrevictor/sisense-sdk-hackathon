@@ -1,6 +1,16 @@
 import { measureFactory, filterFactory } from "@sisense/sdk-data";
-import { LineChart, BarChart, PieChart, ScatterChart, BoxplotChart } from "@sisense/sdk-ui";
+import { LineChart, BarChart, PieChart, ScatterChart, BoxplotChart, HighchartsOptions } from "@sisense/sdk-ui";
 import { DataSource, Rooms, Admissions, Doctors, Diagnosis, ER } from "../healthcare";
+
+const sortSeries = (serie: { data: { y: number; }[]; "": any; }) => {
+  serie.data = serie?.data?.sort((a: { y: number; }, b: { y: number; }) => b.y - a.y);
+  return serie
+}
+
+const getCategoriesFromSortedSeries = (series: any) => {
+  return series[0].data.map((data: any) => data.custom.xValue[0]);
+}
+
 
 export default function Charts() {
   return (<div className="d-flex flex-column gap-4 px-4 py-2">
@@ -8,15 +18,37 @@ export default function Charts() {
 
     <div className="d-flex gap-3" style={{ minHeight: 350 }}>
       <div className="w-50">
-        <h3>Admissions per room</h3>
+        <h3>Room Admissions</h3>
 
-        <LineChart
+        <BarChart
           dataSet={DataSource}
           dataOptions={{
             category: [Rooms.Room_number],
             value: [measureFactory.count(Admissions.ID, 'Total')],
             breakBy: []
           }}
+          onBeforeRender={(options: HighchartsOptions) => {
+            console.log('options', options);
+            options.series = options?.series?.map(sortSeries);
+            options.xAxis[0].categories = getCategoriesFromSortedSeries(options.series);
+            return options;
+          }}
+          styleOptions={
+            {
+              navigator: {
+                enabled: false
+              },
+              legend: {
+                enabled: false
+              },
+              yAxis: {
+                title: {
+                  enabled: true,
+                  text: 'Admissions'
+                }
+              }
+            }
+          }
         />
       </div>
 
@@ -29,7 +61,24 @@ export default function Charts() {
             category: [Doctors.Name],
             value: [measureFactory.count(Admissions.ID, 'Total')],
             breakBy: []
-          }} />
+          }}
+          styleOptions={
+            {
+              navigator: {
+                enabled: false
+              },
+              legend: {
+                enabled: false
+              },
+              yAxis: {
+                title: {
+                  enabled: true,
+                  text: 'Patients'
+                }
+              }
+            }
+          }
+           />
       </div>
     </div>
 
@@ -39,7 +88,7 @@ export default function Charts() {
         <LineChart
           dataSet={DataSource}
           dataOptions={{
-            category: [Admissions.Admission_Time.Months.format('MM/YYYY')],
+            category: [Admissions.Admission_Time.Months.format('MM/yyyy')],
             value: [measureFactory.count(Admissions.Death, 'Deaths')],
             breakBy: []
           }}
@@ -95,7 +144,7 @@ export default function Charts() {
         <BoxplotChart
           dataSet={DataSource}
           dataOptions={{
-            category: [ER.Date.Months.format('MM/YYYY')],
+            category: [ER.Date.Months.format('MM/yyyy')],
             value: [{ column: ER.Waitingtime, name: 'Time of Stay' }],
             boxType: 'iqr',
             outliersEnabled: true,
@@ -111,7 +160,7 @@ export default function Charts() {
         <LineChart
           dataSet={DataSource}
           dataOptions={{
-            category: [ER.Date.Months.format('MM/YYYY')],
+            category: [ER.Date.Months.format('MM/yyyy')],
             value: [measureFactory.count(ER.ID, 'Total')],
             breakBy: [Diagnosis.Description]
           }} />
