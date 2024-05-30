@@ -12,7 +12,7 @@ export default function DiagnosisPage() {
     return null;
   };
 
-  return <div className="d-flex flex-column px-3 py-3 bg-white rounded shadow-sm overflow-hidden">
+  return <div className="d-flex flex-column px-3 py-4 bg-white rounded shadow-sm overflow-hidden">
     <div className="w-100" style={{ minHeight: 350 }}>
       <h5>Diagnosis evolution over time</h5>
 

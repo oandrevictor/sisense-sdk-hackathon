@@ -46,7 +46,7 @@
 
 /* Metric */
 .metric {
-  min-width: 240px;
+  min-width: 260px;
 }
 
 /* Utils */
@@ -60,4 +60,8 @@
 
 .body-xs {
   font-size: 0.75em;
+}
+
+[data-type="pie"] > div {
+  margin-top: -1em;
 }
