@@ -14,6 +14,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           typography: {
             fontFamily: 'Roboto',
           },
+          palette: {
+            variantColors: ["#a2d2ff","#ffafcc","#ccf5ac","#CDB4DB", "#bde0fe","#ffc8dd"]
+          }
         }}
       >
         <App />

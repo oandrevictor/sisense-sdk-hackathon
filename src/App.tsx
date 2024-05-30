@@ -25,7 +25,7 @@ const pages: Page[] = [
     component: <DoctorsPage />
   },
   {
-    label: 'Charts',
+    label: 'Insights',
     icon: <FaChartPie />,
     component: <Charts />
   }
