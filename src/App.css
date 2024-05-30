@@ -1,0 +1,43 @@
+:root {
+  --width-sidebar: 250px;
+}
+
+.layout {
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Sidebar */
+.sidebar {
+  width: var(--width-sidebar);
+  background-color: rgb(227, 242, 255);
+}
+
+.page-link {
+  cursor: pointer;
+  transform: .25s ease;
+}
+
+.page-link:hover {
+  opacity: .8;
+}
+
+/* Content */
+.page-content {
+  width: calc(100% - var(--width-sidebar));
+  height: 100%;
+  overflow-y: scroll;
+}
+
+/* Utils */
+.body {
+  font-size: 1em;
+}
+
+.body-s {
+  font-size: 0.875em;
+}
+
+.body-xs {
+  font-size: 0.75em;
+}
