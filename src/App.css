@@ -61,3 +61,7 @@
 .body-xs {
   font-size: 0.75em;
 }
+
+[data-type="pie"] > div {
+  margin-top: -3em;
+}

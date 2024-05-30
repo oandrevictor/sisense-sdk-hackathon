@@ -11,7 +11,7 @@ type Props = {
 }
 
 export default function Sidebar({ pages, active, onChange }: Props) {
-  return (<div className="sidebar h-100 d-flex flex-column gap-5 px-2 py-3 border-end border-1 border-light shadow-sm">
+  return (<div className="sidebar h-100 d-flex flex-column gap-5 px-2 py-3 border-end border-1 border-gray shadow-sm">
     <h3 className="text-center">
       My Health
     </h3>
@@ -26,7 +26,7 @@ export default function Sidebar({ pages, active, onChange }: Props) {
         </div>
       )}
 
-      <div className="d-flex flex-grow-1 w-100 border-top border-1 border-gray mt-auto" />
+      <div className="d-flex flex-grow-1 w-100 border-top border-1 border-gray mb-auto mt-3" />
 
       <div className="body-xs text-black-50">
         by Andre Andrade & Eric Santos
