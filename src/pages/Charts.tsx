@@ -24,7 +24,7 @@ export default function Charts() {
           dataSet={DataSource}
           dataOptions={{
             category: [Rooms.Room_number],
-            value: [measureFactory.count(Admissions.ID, 'Total')],
+            value: [measureFactory.count(Admissions.ID, 'Total').sort(2)],
             breakBy: []
           }}
           onBeforeRender={(options: HighchartsOptions) => {

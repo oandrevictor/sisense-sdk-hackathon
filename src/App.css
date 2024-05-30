@@ -7,10 +7,20 @@
   width: 100vw;
 }
 
+.color-background {
+  background: rgb(167, 165, 186);
+  background: linear-gradient(90deg, rgba(167, 165, 186, 1) 0%, rgba(218, 215, 255, 1) 30%, rgba(58, 202, 231, 1) 100%);
+  width: 130%;
+  height: 27vw;
+  top: -9vh;
+  left: -10%;
+  transform: rotate(-5deg);
+}
+
 /* Sidebar */
 .sidebar {
   width: var(--width-sidebar);
-  background-color: rgb(227, 242, 255);
+  background-color: rgb(233 238 243);
 }
 
 .page-link {
@@ -26,7 +36,12 @@
 .page-content {
   width: calc(100% - var(--width-sidebar));
   height: 100%;
-  overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.page-content > div:not(.color-backgorund) {
+  z-index: 2;
 }
 
 /* Utils */
