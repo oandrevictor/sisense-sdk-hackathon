@@ -1,6 +1,6 @@
 import { Filter, measureFactory, filterFactory } from "@sisense/sdk-data";
 import { LineChart, BarChart, PieChart, ScatterChart, BoxplotChart, HighchartsOptions, MemberFilterTile, DateRangeFilterTile } from "@sisense/sdk-ui";
-import { DataSource, Rooms, Admissions, Doctors, Diagnosis, ER, Divisions } from "../healthcare";
+import { DataSource, Rooms, Admissions, Doctors, Diagnosis, ER, Divisions, Conditionstimeofstay } from "../healthcare";
 import { useMemo, useState } from "react";
 
 const sortSeries = (serie: { data: { y: number; }[]; "": any; }) => {
@@ -43,20 +43,23 @@ export default function Charts() {
       />
 
     </div>
-
+  
     <div className="d-flex gap-3" style={{ minHeight: 350 }}>
-
-    <div className="w-50">
-        <h3>Division Usage</h3>
+    
+      <div className="w-50">
+        <h3>Room Admissions</h3>
 
         <BarChart
           dataSet={DataSource}
           dataOptions={{
-            category: [Divisions.Divison_name],
-            value: [measureFactory.count(Admissions.ID, 'Total').sort(0)],
+            category: [Rooms.Room_number],
+            value: [measureFactory.count(Admissions.ID, 'Total').sort(1)],
             breakBy: [],
           }}
-          filters={filters}
+          filters={[filterFactory.topRanking(
+            Rooms.Room_number,
+            measureFactory.count(Admissions.ID, 'Total').sort(1),
+            10), ...filters]}
           onBeforeRender={(options: HighchartsOptions) => {
             console.log('options', options);
             options.series = options?.series?.map(sortSeries);
@@ -76,41 +79,11 @@ export default function Charts() {
                   enabled: true,
                   text: 'Admissions'
                 }
-              }
-            }
-          }
-        />
-      </div>
-
-      <div className="w-50">
-        <h3>Room Admissions</h3>
-
-        <BarChart
-          dataSet={DataSource}
-          dataOptions={{
-            category: [Rooms.Room_number],
-            value: [measureFactory.count(Admissions.ID, 'Total').sort(2)],
-            breakBy: [],
-          }}
-          filters={filters}
-          onBeforeRender={(options: HighchartsOptions) => {
-            console.log('options', options);
-            options.series = options?.series?.map(sortSeries);
-            options.xAxis[0].categories = getCategoriesFromSortedSeries(options.series);
-            return options;
-          }}
-          styleOptions={
-            {
-              navigator: {
-                enabled: false
               },
-              legend: {
-                enabled: false
-              },
-              yAxis: {
+              xAxis: {
                 title: {
                   enabled: true,
-                  text: 'Admissions'
+                  text: 'Room'
                 }
               }
             }
@@ -141,7 +114,14 @@ export default function Charts() {
                   enabled: true,
                   text: 'Patients'
                 }
+              },
+              xAxis: {
+                title: {
+                  enabled: true,
+                  text: 'Doctor'
+                }
               }
+              
             }
           }
           onBeforeRender={(options: HighchartsOptions) => {
@@ -172,24 +152,6 @@ export default function Charts() {
         }
       />
     </div>
-
-    <div className="d-flex gap-3" style={{ minHeight: 350 }}>
-
-
-      <div style={{ height: 300, width: 800 }}>
-        <h3>Deaths per disease</h3>
-
-        <PieChart
-          dataSet={DataSource}
-
-          dataOptions={{
-            category: [Diagnosis.Description],
-            value: [measureFactory.aggregate(Admissions.Death, 'count', 'Deaths')],
-          }}
-        />
-      </div>
-    </div>
-
     <div className="d-flex gap-3" style={{ minHeight: 350 }}>
       <div style={{ width: '30%' }}>
         <h3>Diseases status</h3>

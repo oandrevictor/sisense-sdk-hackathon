@@ -24,4 +24,3 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </SisenseContextProvider>
   </React.StrictMode>,
 )
-
