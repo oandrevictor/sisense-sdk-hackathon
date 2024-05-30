@@ -44,6 +44,11 @@
   z-index: 2;
 }
 
+/* Metric */
+.metric {
+  min-width: 240px;
+}
+
 /* Utils */
 .body {
   font-size: 1em;

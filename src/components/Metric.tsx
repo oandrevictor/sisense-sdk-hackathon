@@ -13,7 +13,7 @@ type Props = {
 }
 
 export default function Metric({ title, value, secondary }: Props) {
-  return <div className="ps-3 pt-2 pb-3 pe-5 rounded shadow border border-1 border-light bg-light">
+  return <div className="metric ps-3 pt-2 pb-3 pe-5 rounded shadow border border-1 border-light bg-light">
     <div className="d-flex align-items-end gap-2">
       <div className="fs-2 fw-bold">{value}</div>
       <div className="pb-2 body-s text-muted fw-bold">{title}</div>
