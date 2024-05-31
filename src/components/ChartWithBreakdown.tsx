@@ -7,7 +7,6 @@ import cx from 'classnames';
 import { CSVLink } from "react-csv";
 import { FaDownload } from 'react-icons/fa6';
 
-
 type Props = {
     filters: Filter[];
     title: string;
@@ -28,16 +27,6 @@ const formatString = {
     Months: 'MMM yyyy',
     Quarters: 'MMM yyyy',
     Years: 'yyyy'
-}
-
-
-const sortSeries = (serie: { data: { y: number; }[]; "": any; }) => {
-    serie.data = serie?.data?.sort((a: { y: number; }, b: { y: number; }) => b.y - a.y);
-    return serie
-}
-
-const getCategoriesFromSortedSeries = (series: any) => {
-    return series[0].data.map((data: any) => data.custom.xValue[0]);
 }
 
 const titleWithGranularityInfo = (title: string, granularity: Granularity) => {
@@ -61,7 +50,6 @@ const rows = (series: any) => {
     }).flat();
 
 }
-
 
 export const ChartWithBreakdown = ({ filters, title, fixedFilter, value, granularity, relatedPage, category }: Props) => {
     const [breakdownBy, setBreakdownBy] = useState<Column | null>(null);
@@ -113,7 +101,6 @@ export const ChartWithBreakdown = ({ filters, title, fixedFilter, value, granula
                         <button type="button" className={cx("btn btn-outline-secondary btn-filter", { active: isActive(ER.Waitingtime) })} onClick={() => setBreakdownBy(ER.Waitingtime)}>Waiting time</button>
                     </div>
                 </ul>
-
 
                 <div className="d-flex gap-3">
                     <div className="" style={{ width: '100%' }}>
