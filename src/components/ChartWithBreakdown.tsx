@@ -4,6 +4,9 @@ import { DataSource, Diagnosis, Divisions, Doctors, ER, Rooms } from "../healthc
 import { CalculatedMeasureColumn, Column, DateDimension, Filter, LevelAttribute, MeasureColumn } from "@sisense/sdk-data"
 import { useEffect, useState } from "react"
 import cx from 'classnames';
+import { CSVLink } from "react-csv";
+import { FaDownload } from 'react-icons/fa6';
+
 
 type Props = {
     filters: Filter[];
@@ -31,22 +34,50 @@ const formatString = {
 const sortSeries = (serie: { data: { y: number; }[]; "": any; }) => {
     serie.data = serie?.data?.sort((a: { y: number; }, b: { y: number; }) => b.y - a.y);
     return serie
-  }
-  
-  const getCategoriesFromSortedSeries = (series: any) => {
+}
+
+const getCategoriesFromSortedSeries = (series: any) => {
     return series[0].data.map((data: any) => data.custom.xValue[0]);
-  }
+}
 
 const titleWithGranularityInfo = (title: string, granularity: Granularity) => {
     const granWithoutPlural = granularity.slice(0, -1);
     return granularity === 'Weeks' ? `${title} (the week of)` : `${title} (${granWithoutPlural})`;
 }
 
+const columns = (category, value, breakdownBy) => {
+    const cols = [category.name, value.name];
+    if (breakdownBy) {
+        cols.push(breakdownBy.name);
+    }
+    return cols;
+};
+
+const rows = (series: any) => {
+    return series.map((serie: any) => {
+        return serie.data.map((data: any) => {
+            return series.length > 1 ? [data.custom.xValue[0], data.y, serie.name] : [data.custom.xValue[0], data.y];
+        });
+    }).flat();
+
+}
+
+
 export const ChartWithBreakdown = ({ filters, title, fixedFilter, value, granularity, relatedPage, category }: Props) => {
     const [breakdownBy, setBreakdownBy] = useState<Column | null>(null);
     const [groupBy, setGroupBy] = useState<Column>(getForGranularity(category, granularity).format(formatString[granularity]));
     const isActive = (breakdown: Column | null) => breakdownBy?.name === breakdown?.name;
     const isGroupedBy = (group: Column | null) => groupBy?.name === group?.name;
+    const [chartData, setChartData] = useState(null);
+    const [csvKeys, setCsvKeys] = useState("");
+    const [csvData, setCsvData] = useState([]);
+
+    useEffect(() => {
+        if (chartData) {
+            setCsvData([columns(groupBy, value, breakdownBy), ...rows(chartData.series)]);
+        }
+    }, [chartData]);
+
 
     useEffect(() => {
         if ((groupBy as DateDimension).expression.indexOf('Calendar') > -1) {
@@ -59,6 +90,7 @@ export const ChartWithBreakdown = ({ filters, title, fixedFilter, value, granula
             <div className="card-body">
                 <div className="d-flex filters justify-content-between">
                     <h4 className="card-title">{title}</h4>
+                    <CSVLink data={csvData}><button type="button"className="btn btn-secondary" style={{fontSize: '0.7rem'}} data-bs-toggle="modal" data-bs-target="#csvModal">Export as csv <FaDownload/></button></CSVLink>
                 </div>
 
                 <ul className="nav nav-pills " style={{ fontSize: '0.8rem' }}>
@@ -110,6 +142,12 @@ export const ChartWithBreakdown = ({ filters, title, fixedFilter, value, granula
                                     },
                                 }
                             }
+                            onBeforeRender={(data) => {
+                                if (csvKeys === `${groupBy.name},${value.name}${breakdownBy ? `,${breakdownBy.name}` : ''},${data?.series?.length}`) return data;
+                                setChartData(data);
+                                setCsvKeys(`${groupBy.name},${value.name}${breakdownBy ? `,${breakdownBy.name}` : ''},${chartData?.series?.length}`);
+                                return data;
+                            }}
                         />
                     </div>
                 </div>
