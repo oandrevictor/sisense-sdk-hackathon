@@ -1,7 +1,7 @@
 import { ColumnChart, StyledMeasureColumn } from "@sisense/sdk-ui"
 import { Fragment } from "react/jsx-runtime"
-import { Admissions, DataSource, Diagnosis, Divisions, Doctors } from "../healthcare"
-import { CalculatedMeasureColumn, Column, Filter, MeasureColumn, filterFactory, measureFactory } from "@sisense/sdk-data"
+import { Admissions, DataSource, Diagnosis, Divisions, Doctors, Rooms } from "../healthcare"
+import { CalculatedMeasureColumn, Column, DateDimension, Filter, LevelAttribute, MeasureColumn, filterFactory, measureFactory } from "@sisense/sdk-data"
 import { useState } from "react"
 import cx from 'classnames';
 
@@ -10,10 +10,27 @@ type Props = {
     title: string;
     fixedFilter?: Filter;
     value: MeasureColumn | CalculatedMeasureColumn | StyledMeasureColumn;
+    granularity: Granularity;
 }
 
+type Granularity = 'Days' | 'Weeks' | 'Months' | 'Quarters' | 'Years';
 
-export const ChartWithBreakdown = ({ filters, title, fixedFilter, value }: Props) => {
+const getForGranularity = (dimension: DateDimension, granularity: Granularity): LevelAttribute => dimension[granularity];
+
+const formatString = {
+    Days: 'MM/dd/yyyy',
+    Weeks: 'MMM dd',
+    Months: 'MMM yyyy',
+    Quarters: 'MMM yyyy',
+    Years: 'yyyy'
+}
+
+const titleWithGranularityInfo = (title: string, granularity: Granularity) => {
+const granWithoutPlural = granularity.slice(0, -1);
+return granularity === 'Weeks' ? `${title} (the week of)` : `${title} (${granWithoutPlural})`;
+}
+
+export const ChartWithBreakdown = ({ filters, title, fixedFilter, value, granularity }: Props) => {
     const [breakdownBy, setBreakdownBy] = useState<Column | null>(null);
 
     const isActive = (breakdown: Column | null) => breakdownBy?.name === breakdown?.name;
@@ -38,13 +55,16 @@ export const ChartWithBreakdown = ({ filters, title, fixedFilter, value }: Props
                     <li className="nav-item">
                         <a className={cx('nav-link', { active: isActive(Doctors.Name) })} href="#" onClick={() => setBreakdownBy(Doctors.Name)}>Doctor</a>
                     </li>
+                    <li className="nav-item">
+                        <a className={cx('nav-link', { active: isActive(Rooms.Room_number) })} href="#" onClick={() => setBreakdownBy(Rooms.Room_number)}>Room</a>
+                    </li>
                 </ul>
                 <div className="d-flex gap-3">
                     <div className="" style={{ width: '70%' }}>
                         <ColumnChart
                             dataSet={DataSource}
                             dataOptions={{
-                                category: [Admissions.Admission_Time.Months.format('MMM yyyy')],
+                                category: [getForGranularity(Admissions.Admission_Time, granularity).format(formatString[granularity])],
                                 value: [value],
                                 breakBy: breakdownBy ? [breakdownBy] : []
                             }}
@@ -57,7 +77,13 @@ export const ChartWithBreakdown = ({ filters, title, fixedFilter, value }: Props
                                     legend: {
                                         enabled: true,
                                         position: 'top'
-                                    }
+                                    },
+                                    xAxis: {
+                                        title: {
+                                            enabled: true,
+                                            text: titleWithGranularityInfo('Admission Date', granularity)
+                                        }
+                                    },
                                 }
                             }
                         />

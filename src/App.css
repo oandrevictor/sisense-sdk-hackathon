@@ -75,3 +75,7 @@
      display: none !important;
   }
 }
+
+.gran-select {
+  font-size: 0.8em !important;
+}
