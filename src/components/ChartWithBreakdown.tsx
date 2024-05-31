@@ -5,7 +5,9 @@ import { CalculatedMeasureColumn, Column, DateDimension, Filter, LevelAttribute,
 import { useEffect, useState } from "react"
 import cx from 'classnames';
 import { CSVLink } from "react-csv";
-import { FaDownload } from 'react-icons/fa6';
+import { FaDownload, FaBell, FaCheck } from 'react-icons/fa6';
+import Select from 'react-select';
+
 
 type Props = {
     filters: Filter[];
@@ -29,6 +31,11 @@ const formatString = {
     Years: 'yyyy'
 }
 
+const notifyOptions = [
+    { value: 'new maximum', label: 'New maximum' },
+    { value: 'new minimum', label: 'New minimum' }
+  ];
+  
 const titleWithGranularityInfo = (title: string, granularity: Granularity) => {
     const granWithoutPlural = granularity.slice(0, -1);
     return granularity === 'Weeks' ? `${title} (the week of)` : `${title} (${granWithoutPlural})`;
@@ -145,7 +152,7 @@ export const ChartWithBreakdown = ({ filters, title, fixedFilter, value, granula
 
             {relatedPage ?
                 <div className="card-footer bg-lightblue text-white">
-                    <small className="">Check more information about {relatedPage} by clicking here.</small>
+                    <small className="d-flex align-items-center gap-2 justify-content-end"><FaBell /> Receive a notification when {relatedPage} totals reach <Select options={notifyOptions} defaultValue={notifyOptions[1]} /> <button type="button" className="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#csvModal">Save <FaCheck /></button></small>
                 </div> : null}
         </div>
     </Fragment>
