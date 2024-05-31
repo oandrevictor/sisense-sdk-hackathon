@@ -70,6 +70,10 @@
   background-color: rgb(146, 195, 247)!important;
 }
 
+.bg-lightblue {
+  background-color: rgb(146, 195, 247);
+}
+
 @media print {
   .noprint {
      display: none !important;

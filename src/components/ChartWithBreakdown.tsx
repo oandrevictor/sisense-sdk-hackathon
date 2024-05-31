@@ -1,4 +1,4 @@
-import { ColumnChart, StyledMeasureColumn } from "@sisense/sdk-ui"
+import { ColumnChart, DateRangeFilterTile, StyledMeasureColumn } from "@sisense/sdk-ui"
 import { Fragment } from "react/jsx-runtime"
 import { Admissions, DataSource, Diagnosis, Divisions, Doctors, Rooms } from "../healthcare"
 import { CalculatedMeasureColumn, Column, DateDimension, Filter, LevelAttribute, MeasureColumn, filterFactory, measureFactory } from "@sisense/sdk-data"
@@ -11,6 +11,7 @@ type Props = {
     fixedFilter?: Filter;
     value: MeasureColumn | CalculatedMeasureColumn | StyledMeasureColumn;
     granularity: Granularity;
+    relatedPage?: string;
 }
 
 export type Granularity = 'Days' | 'Weeks' | 'Months' | 'Quarters' | 'Years';
@@ -30,17 +31,21 @@ const granWithoutPlural = granularity.slice(0, -1);
 return granularity === 'Weeks' ? `${title} (the week of)` : `${title} (${granWithoutPlural})`;
 }
 
-export const ChartWithBreakdown = ({ filters, title, fixedFilter, value, granularity }: Props) => {
+export const ChartWithBreakdown = ({ filters, title, fixedFilter, value, granularity, relatedPage }: Props) => {
     const [breakdownBy, setBreakdownBy] = useState<Column | null>(null);
+    const [dateRangeFilter, setDateRangeFilter] = useState<Filter>(filterFactory.dateRange(Admissions.Admission_Time.Days));
 
     const isActive = (breakdown: Column | null) => breakdownBy?.name === breakdown?.name;
 
     return <Fragment>
-        <h3 className="mb-2">{title}</h3>
-
         <div className="card shadow border border-1 border-light">
 
             <div className="card-body">
+                <div className="d-flex filters justify-content-between">
+            <h4 className="card-title">{title}</h4>
+            
+            </div>
+
                 <ul className="nav nav-pills " style={{ fontSize: '0.8rem' }}>
                     <li className="px-2 py-2 nav-item">Break down by:</li>
                     <li className="nav-item">
@@ -60,7 +65,7 @@ export const ChartWithBreakdown = ({ filters, title, fixedFilter, value, granula
                     </li>
                 </ul>
                 <div className="d-flex gap-3">
-                    <div className="" style={{ width: '70%' }}>
+                    <div className="" style={{ width: '100%' }}>
                         <ColumnChart
                             dataSet={DataSource}
                             dataOptions={{
@@ -88,11 +93,13 @@ export const ChartWithBreakdown = ({ filters, title, fixedFilter, value, granula
                             }
                         />
                     </div>
-                    <div>
-                        X deaths recorded.
-                    </div>
                 </div>
+                
             </div>
+            {relatedPage ?
+            <div className="card-footer bg-lightblue text-white">
+      <small className="">Check more information about {relatedPage} by clicking here.</small>
+    </div> : null}
         </div>
     </Fragment>
 }

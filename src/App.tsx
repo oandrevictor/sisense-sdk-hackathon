@@ -3,22 +3,16 @@ import { useState } from 'react';
 import { FaBed, FaChartPie, FaClipboardUser, FaHouse, FaUsers } from 'react-icons/fa6';
 import './App.css';
 import Sidebar, { Page } from './components/Sidebar';
-import Charts from './pages/Charts';
 import DiagnosisPage from './pages/DiagnosisPage';
 import DoctorsPage from './pages/DoctorsPage';
-import Home from './pages/Home';
 import PatientsPage from './pages/PatientsPage';
+import Home from './pages/Home';
 
 const pages: Page[] = [
   {
-    label: 'Home',
+    label: 'Insights',
     icon: <FaHouse />,
     component: <Home />
-  },
-  {
-    label: 'Insights',
-    icon: <FaChartPie />,
-    component: <Charts />
   },
   {
     label: 'Diagnosis',

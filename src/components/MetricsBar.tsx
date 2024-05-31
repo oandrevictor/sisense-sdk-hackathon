@@ -59,7 +59,7 @@ export default function MetricsBar() {
     {
       title: 'ER Admissions',
       value: erAdmissions,
-      icon: <FaCross className="text-danger" />,
+      icon: <FaBedPulse className="text-secondary" />,
       secondary: {
         title: 'Since last Month',
         value: erUpdate,
@@ -75,17 +75,8 @@ export default function MetricsBar() {
         value: diagnosisUpdate,
         positive: diagnosisStatus
       }
-    },
-    {
-      title: 'Avg Days of Stay',
-      value: Math.round(timeOfStay),
-      icon: <FaBedPulse className="text-secondary" />,
-      secondary: {
-        title: 'Since last month',
-        value: Math.round(tosUpdate),
-        positive: tosStatus
-      }
     }
+    
   ]
 
   return <div className="d-flex gap-3">
