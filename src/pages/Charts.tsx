@@ -2,7 +2,17 @@ import { Filter, measureFactory, filterFactory, Attribute, Column } from "@sisen
 import { LineChart, BarChart, PieChart, ScatterChart, BoxplotChart, HighchartsOptions, MemberFilterTile, DateRangeFilterTile, ColumnChart } from "@sisense/sdk-ui";
 import { DataSource, Rooms, Admissions, Doctors, Diagnosis, ER, Divisions, Conditionstimeofstay } from "../healthcare";
 import { useMemo, useState } from "react";
-import cx from 'classnames';
+import { ChartWithBreakdown } from "../components/ChartWithBreakdown";
+import React from 'react';
+import Select from 'react-select';
+
+const granOptions = [
+  { value: 'Days', label: 'Days' },
+  { value: 'Weeks', label: 'Weeks' },
+  { value: 'Months', label: 'Months' },
+  { value: 'Quarters', label: 'Quarters' },
+  { value: 'Years', label: 'Years' }
+];
 
 const sortSeries = (serie: { data: { y: number; }[]; "": any; }) => {
   serie.data = serie?.data?.sort((a: { y: number; }, b: { y: number; }) => b.y - a.y);
@@ -16,14 +26,10 @@ const getCategoriesFromSortedSeries = (series: any) => {
 export default function Charts() {
   const [categoryFilter, setCategoryFilter] = useState<Filter | null>(null);
   const [dateRangeFilter, setDateRangeFilter] = useState<Filter>(filterFactory.dateRange(Admissions.Admission_Time.Days));
+  const [granularity, setGranularity] = useState('Months');
 
   const filters = useMemo(() => categoryFilter ? [dateRangeFilter, categoryFilter] : [dateRangeFilter],
     [categoryFilter, dateRangeFilter]);
-
-  const [breakdownBy, setBreakdownBy] = useState<Column | null>(null);
-
-  const isActive = (breakdown: Column | null) => breakdownBy?.name === breakdown?.name;
-  const [metrics, setMetrics] = useState<any | null>({});
 
   return (<div className="d-flex flex-column gap-4 px-4">
     <div className="d-flex justify-content-between">
@@ -32,12 +38,13 @@ export default function Charts() {
         <DateRangeFilterTile
           title="Date Range"
           dataSource={DataSource}
-          attribute={Admissions.Admission_Time.Days}
+          attribute={Admissions.Admission_Time.Months}
           filter={dateRangeFilter}
           onChange={(filter) => {
             setDateRangeFilter(filter);
           }}
         />
+        <div className="d-flex gap-2 gran-select align-items-center"> <span className="text-light">Granularity:</span> <Select options={granOptions} defaultValue={granOptions[2]} onChange={(e) => setGranularity((gran) => e?.value ? e.value : gran)} /> </div>
       </div>
 
       <MemberFilterTile
@@ -52,149 +59,10 @@ export default function Charts() {
 
     <div className="" style={{ minHeight: 350 }}>
 
-      <h3 className="mb-2"> Deaths over time</h3>
-
-      <div className="card">
-
-        <div className="card-body">
-          <ul className="nav nav-pills " style={{ fontSize: '0.8rem' }}>
-            <li className="px-2 py-2 nav-item">Break down by:</li>
-            <li className="nav-item">
-              <a className={cx('nav-link', { active: isActive(null) })} aria-current="page" href="#" onClick={()=> setBreakdownBy(null)}>Nothing</a>
-            </li>
-            <li className="nav-item">
-              <a className={cx('nav-link', { active: isActive(Diagnosis.Description) })} href="#" onClick={()=> setBreakdownBy(Diagnosis.Description)}>Diagnosis</a>
-            </li>
-            <li className="nav-item">
-              <a className={cx('nav-link', { active: isActive(Divisions.Divison_name) })} href="#" onClick={()=> setBreakdownBy(Divisions.Divison_name)}>Division</a>
-            </li>
-            <li className="nav-item">
-              <a className={cx('nav-link', { active: isActive(Doctors.Name) })} href="#" onClick={()=> setBreakdownBy(Doctors.Name)}>Doctor</a>
-            </li>
-          </ul>
-          <div className="d-flex gap-3">
-            <div className="" style={{ width: '70%' }}>
-              <ColumnChart
-                dataSet={DataSource}
-                dataOptions={{
-                  category: [Admissions.Admission_Time.Months.format('MMM yyyy')],
-                  value: [measureFactory.count(Admissions.Death, 'Deaths')],
-                  breakBy: breakdownBy ? [breakdownBy] : []
-                }}
-                filters={[filterFactory.equals(Admissions.Death, 'Yes'), ...filters]}
-                styleOptions={
-                  {
-                    
-                    height: 420,
-                    subtype: 'column/stackedcolumn'
-                  }
-                }
-              />
-            </div>
-            <div>
-              X deaths recorded.
-
-            </div>
-          </div>
-        </div>
-      </div>
+      <ChartWithBreakdown filters={filters} granularity={granularity} title="Deaths over time" fixedFilter={filterFactory.equals(Admissions.Death, 'Yes')} value={measureFactory.count(Admissions.Death, 'Deaths')} />
     </div>
-
-    <div className="d-flex gap-3" style={{ minHeight: 350 }}>
-
-      <div className="card w-100">
-        <div className="card-body">
-          <h3 className="card-title">Room Admissions</h3>
-          <div className="d-flex">
-            <BarChart
-              dataSet={DataSource}
-              dataOptions={{
-                category: [Rooms.Room_number],
-                value: [measureFactory.count(Admissions.ID, 'Total').sort(1)],
-                breakBy: [],
-              }}
-              filters={[filterFactory.topRanking(
-                Rooms.Room_number,
-                measureFactory.count(Admissions.ID, 'Total').sort(1),
-                10), ...filters]}
-              onBeforeRender={(options: HighchartsOptions) => {
-                console.log('options', options);
-                options.series = options?.series?.map(sortSeries);
-                options.xAxis[0].categories = getCategoriesFromSortedSeries(options.series);
-                return options;
-              }}
-              styleOptions={
-                {
-                  navigator: {
-                    enabled: false
-                  },
-                  legend: {
-                    enabled: false
-                  },
-                  yAxis: {
-                    title: {
-                      enabled: true,
-                      text: 'Admissions'
-                    }
-                  },
-                  xAxis: {
-                    title: {
-                      enabled: true,
-                      text: 'Room'
-                    }
-                  },
-                  height: 420
-                }
-              }
-            />
-
-            <div className="flex-1"> Insight</div>
-          </div>
-        </div>
-      </div>
-
-
-    </div>
-    <div className="w-50">
-      <h3>Patients per doctor</h3>
-
-      <BarChart
-        dataSet={DataSource}
-        dataOptions={{
-          category: [Doctors.Name],
-          value: [measureFactory.count(Admissions.ID, 'Total')],
-          breakBy: []
-        }}
-        styleOptions={
-          {
-            navigator: {
-              enabled: false
-            },
-            legend: {
-              enabled: false
-            },
-            yAxis: {
-              title: {
-                enabled: true,
-                text: 'Patients'
-              }
-            },
-            xAxis: {
-              title: {
-                enabled: true,
-                text: 'Doctor'
-              }
-            }
-
-          }
-        }
-        onBeforeRender={(options: HighchartsOptions) => {
-          console.log('options', options);
-          options.series = options?.series?.map(sortSeries);
-          options.xAxis[0].categories = getCategoriesFromSortedSeries(options.series);
-          return options;
-        }}
-      />
+    <div>
+      <ChartWithBreakdown filters={filters} granularity={granularity} title="Patients" value={measureFactory.count(Admissions.ID, 'Admissions')} />
     </div>
 
     <div className="d-flex gap-3" style={{ minHeight: 350 }}>

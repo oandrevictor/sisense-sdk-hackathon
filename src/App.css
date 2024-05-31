@@ -69,3 +69,13 @@
 .nav-link.active {
   background-color: rgb(146, 195, 247)!important;
 }
+
+@media print {
+  .noprint {
+     display: none !important;
+  }
+}
+
+.gran-select {
+  font-size: 0.8em !important;
+}

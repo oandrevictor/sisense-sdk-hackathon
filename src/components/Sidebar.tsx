@@ -11,7 +11,7 @@ type Props = {
 }
 
 export default function Sidebar({ pages, active, onChange }: Props) {
-  return (<div className="sidebar h-100 d-flex flex-column gap-5 px-2 py-3 border-end border-1 border-gray shadow-sm">
+  return (<div className="sidebar h-100 d-flex flex-column gap-5 px-2 py-3 border-end border-1 border-gray shadow-sm noprint">
     <h3 className="text-center">
       CareInsights
     </h3>
