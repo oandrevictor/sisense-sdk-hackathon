@@ -49,7 +49,7 @@ export default function MetricsBar() {
     {
       title: 'Admissions',
       value: admissions,
-      icon: <FaFolder className="text-primary" />,
+      icon: <FaFolder className="text-secondary" />,
       secondary: {
         title: 'Since last month',
         value: admissionsUpdate,
@@ -69,7 +69,7 @@ export default function MetricsBar() {
     {
       title: 'Diagnosis',
       value: diagnosis,
-      icon: <FaClipboardList className="" />,
+      icon: <FaClipboardList className="text-secondary" />,
       secondary: {
         title: 'Since last week',
         value: diagnosisUpdate,

@@ -3,6 +3,7 @@ body {
 }
 :root {
   --width-sidebar: 250px;
+  --primary: #3a3a3a;
 }
 
 .layout {
@@ -22,11 +23,11 @@ body {
 
 /* Sidebar */
 .sidebar {
-  width: var(--width-sidebar);
-  height: 100vh !important;
+  width: 100%;
   position:sticky;
   top:0px;
   background: rgb(251, 251, 251);
+  z-index: 3;
 }
 
 .page-link {
@@ -87,5 +88,9 @@ body {
 }
 
 .gran-select {
+  font-size: 0.8em !important;
+}
+
+.btn-filter {
   font-size: 0.8em !important;
 }

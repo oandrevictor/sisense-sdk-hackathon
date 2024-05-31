@@ -35,8 +35,7 @@ export default function Home() {
   return (<div className="d-flex flex-column gap-4 px-4">
     <div className="header-with-filters d-flex justify-content-between">
       <div>
-        <h1>Hello,</h1>
-        <h6>Here are some insights about your facility.</h6>
+        <h1 className="mb-4">Insights</h1>
         <div className="d-flex justify-content-between">
           <MetricsBar />
         </div>
@@ -56,47 +55,16 @@ export default function Home() {
     </div>
 
     <div>
-      <ChartWithBreakdown filters={filters} granularity={granularity} title="Patients" value={measureFactory.count(Admissions.ID, 'Admissions')} relatedPage="Patients" />
-    </div>
-
-
-    <div className="" style={{ minHeight: 350 }}>
-
-      <ChartWithBreakdown filters={filters} granularity={granularity} title="Deaths over time" fixedFilter={filterFactory.equals(Admissions.Death, 'Yes')} value={measureFactory.count(Admissions.Death, 'Deaths')} />
-    </div>
-
-
-    <div className="d-flex gap-3" style={{ minHeight: 350 }}>
-     
-
-      <div style={{ width: '30%' }}>
-        <h3>ER Waiting time</h3>
-
-        <BoxplotChart
-          dataSet={DataSource}
-          dataOptions={{
-            category: [ER.Date.Months.format('MM/yyyy')],
-            value: [{ column: ER.Waitingtime, name: 'Time of Stay' }],
-            boxType: 'iqr',
-            outliersEnabled: true,
-          }}
-        />
-      </div>
+      <ChartWithBreakdown filters={filters} granularity={granularity} title="Patients" value={measureFactory.count(Admissions.ID, 'Admissions')} relatedPage="Patients" category={Admissions.Admission_Time} />
     </div>
 
     <div>
-      <div>
-        <h3>ER Cases Over Time</h3>
-
-        <LineChart
-          dataSet={DataSource}
-          dataOptions={{
-            category: [ER.Date.Months.format('MM/yyyy')],
-            value: [measureFactory.count(ER.ID, 'Total')],
-            breakBy: [Diagnosis.Description]
-          }} />
-      </div>
+    <ChartWithBreakdown filters={filters} granularity={granularity} title="ER Cases" value={measureFactory.count(ER.ID, 'Total')} relatedPage="ER" category={ER.Date} />
     </div>
 
+    <div>
+      <ChartWithBreakdown filters={filters} granularity={granularity} title="Deaths" fixedFilter={filterFactory.equals(Admissions.Death, 'Yes')} value={measureFactory.count(Admissions.Death, 'Deaths')} category={Admissions.Admission_Time} />
+    </div>
+   
   </div>);
 }

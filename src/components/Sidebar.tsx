@@ -11,26 +11,31 @@ type Props = {
 }
 
 export default function Sidebar({ pages, active, onChange }: Props) {
-  return (<div className="sidebar h-100 d-flex flex-column gap-5 py-3 border-end border-1 border-gray shadow-sm noprint bg-light">
-    <h3 className="text-center">
-      <b>Care</b>Insights
-    </h3>
-
-    <div className="d-flex flex-column flex-grow-1 gap-3 px-3">
+  return (<nav className="navbar sidebar navbar-expand-lg" style={{backgroundColor: "#e3f2fd;"}}>
+    <div className="container-fluid">
+    <a className="navbar-brand" href="#"><b>Care</b>Insights</a>
+    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span className="navbar-toggler-icon"></span>
+    </button>
+    <div className="collapse navbar-collapse" id="navbarText">
+      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
       {pages.map(page =>
-        <div key={page.label}
-          onClick={() => onChange(page)}
-          className={cx('text-muted page-link d-flex align-items-center gap-2', { 'fw-bold': active === page })}>
+        <li className="nav-item" key={page.label}>
+          <a onClick={() => onChange(page)}
+          className={cx('text-muted page-link d-flex align-items-center gap-2 ms-2 me-2', { 'fw-bold': active === page })}>
           {page.icon}
           <span>{page.label}</span>
-        </div>
+          </a>
+        </li>
       )}
-
-      <div className="d-flex flex-grow-1 w-100 border-top border-1 border-gray mb-auto mt-3" />
-
-      <div className="body-xs text-black-50">
-        by Andre Andrade & Eric Santos
-      </div>
+      </ul>
+      <span className="navbar-text text-muted fs-6">
+        by André Andrade & Eric Santos
+      </span>
     </div>
-  </div>);
+  </div>
+</nav>
+
+
+    );
 }
