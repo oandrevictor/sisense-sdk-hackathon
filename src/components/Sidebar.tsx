@@ -11,7 +11,7 @@ type Props = {
 }
 
 export default function Sidebar({ pages, active, onChange }: Props) {
-  return (<nav className="navbar sidebar navbar-expand-lg" style={{backgroundColor: "#e3f2fd;"}}>
+  return (<nav className="navbar sidebar navbar-expand-lg">
     <div className="container-fluid">
     <a className="navbar-brand" href="#"><b>Care</b>Insights</a>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">

@@ -2,7 +2,7 @@ import { ColumnChart, StyledMeasureColumn } from "@sisense/sdk-ui"
 import { Fragment } from "react/jsx-runtime"
 import { DataSource, Diagnosis, Divisions, Doctors, ER, Rooms } from "../healthcare"
 import { CalculatedMeasureColumn, Column, DateDimension, Filter, LevelAttribute, MeasureColumn } from "@sisense/sdk-data"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import cx from 'classnames';
 
 type Props = {
@@ -27,6 +27,16 @@ const formatString = {
     Years: 'yyyy'
 }
 
+
+const sortSeries = (serie: { data: { y: number; }[]; "": any; }) => {
+    serie.data = serie?.data?.sort((a: { y: number; }, b: { y: number; }) => b.y - a.y);
+    return serie
+  }
+  
+  const getCategoriesFromSortedSeries = (series: any) => {
+    return series[0].data.map((data: any) => data.custom.xValue[0]);
+  }
+
 const titleWithGranularityInfo = (title: string, granularity: Granularity) => {
     const granWithoutPlural = granularity.slice(0, -1);
     return granularity === 'Weeks' ? `${title} (the week of)` : `${title} (${granWithoutPlural})`;
@@ -37,6 +47,12 @@ export const ChartWithBreakdown = ({ filters, title, fixedFilter, value, granula
     const [groupBy, setGroupBy] = useState<Column>(getForGranularity(category, granularity).format(formatString[granularity]));
     const isActive = (breakdown: Column | null) => breakdownBy?.name === breakdown?.name;
     const isGroupedBy = (group: Column | null) => groupBy?.name === group?.name;
+
+    useEffect(() => {
+        if ((groupBy as DateDimension).expression.indexOf('Calendar') > -1) {
+            setGroupBy(getForGranularity(category, granularity).format(formatString[granularity]));
+        }
+    }, [granularity]);
 
     return <Fragment>
         <div className="card shadow border border-1 border-light">

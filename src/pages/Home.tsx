@@ -15,14 +15,6 @@ const granOptions = [
   { value: 'Years', label: 'Years' }
 ];
 
-const sortSeries = (serie: { data: { y: number; }[]; "": any; }) => {
-  serie.data = serie?.data?.sort((a: { y: number; }, b: { y: number; }) => b.y - a.y);
-  return serie
-}
-
-const getCategoriesFromSortedSeries = (series: any) => {
-  return series[0].data.map((data: any) => data.custom.xValue[0]);
-}
 
 export default function Home() {
   const [categoryFilter, setCategoryFilter] = useState<Filter | null>(null);
