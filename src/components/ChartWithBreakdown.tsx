@@ -13,7 +13,7 @@ type Props = {
     granularity: Granularity;
 }
 
-type Granularity = 'Days' | 'Weeks' | 'Months' | 'Quarters' | 'Years';
+export type Granularity = 'Days' | 'Weeks' | 'Months' | 'Quarters' | 'Years';
 
 const getForGranularity = (dimension: DateDimension, granularity: Granularity): LevelAttribute => dimension[granularity];
 

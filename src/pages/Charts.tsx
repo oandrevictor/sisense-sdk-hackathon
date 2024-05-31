@@ -2,7 +2,7 @@ import { Filter, measureFactory, filterFactory, Attribute, Column } from "@sisen
 import { LineChart, BarChart, PieChart, ScatterChart, BoxplotChart, HighchartsOptions, MemberFilterTile, DateRangeFilterTile, ColumnChart } from "@sisense/sdk-ui";
 import { DataSource, Rooms, Admissions, Doctors, Diagnosis, ER, Divisions, Conditionstimeofstay } from "../healthcare";
 import { useMemo, useState } from "react";
-import { ChartWithBreakdown } from "../components/ChartWithBreakdown";
+import { ChartWithBreakdown, Granularity } from "../components/ChartWithBreakdown";
 import React from 'react';
 import Select from 'react-select';
 
@@ -26,7 +26,7 @@ const getCategoriesFromSortedSeries = (series: any) => {
 export default function Charts() {
   const [categoryFilter, setCategoryFilter] = useState<Filter | null>(null);
   const [dateRangeFilter, setDateRangeFilter] = useState<Filter>(filterFactory.dateRange(Admissions.Admission_Time.Days));
-  const [granularity, setGranularity] = useState('Months');
+  const [granularity, setGranularity] = useState<Granularity>('Months');
 
   const filters = useMemo(() => categoryFilter ? [dateRangeFilter, categoryFilter] : [dateRangeFilter],
     [categoryFilter, dateRangeFilter]);
