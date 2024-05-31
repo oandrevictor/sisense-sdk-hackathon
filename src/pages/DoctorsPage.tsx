@@ -1,7 +1,8 @@
 import { filterFactory, measureFactory } from "@sisense/sdk-data";
-import { DataPoint, PieChart, Table } from "@sisense/sdk-ui";
+import { DataPoint, PieChart, Table, TreemapChart } from "@sisense/sdk-ui";
 import { useState } from "react";
 import { Admissions, DataSource, Divisions, Doctors } from "../healthcare";
+import { CURRENCY } from "../utils/Formats";
 
 export default function DoctorsPage() {
   const [division, setDivision] = useState('');
@@ -57,6 +58,23 @@ export default function DoctorsPage() {
           }}
           onDataPointClick={handleFilter} />
       </div>
+    </div>
+
+    <div className="d-flex flex-column mt-3 px-3 py-4 bg-white rounded shadow-sm overflow-hidden gap-2">
+      <h5>Revenue per Division and Doctor</h5>
+      <TreemapChart
+        dataSet={DataSource}
+        styleOptions={{ height: 450 }}
+        dataOptions={{
+          category: [Divisions.Divison_name, Doctors.FullName],
+          value: [
+            {
+              column: measureFactory.sum(Admissions.Cost_of_admission, 'Revenue'),
+              ...CURRENCY
+            }
+          ]
+        }}
+      />
     </div>
   </div>;
 }
