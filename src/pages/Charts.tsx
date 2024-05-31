@@ -31,7 +31,7 @@ export default function Charts() {
   const filters = useMemo(() => categoryFilter ? [dateRangeFilter, categoryFilter] : [dateRangeFilter],
     [categoryFilter, dateRangeFilter]);
 
-  return (<div className="d-flex flex-column gap-4 px-4 py-2">
+  return (<div className="d-flex flex-column gap-4 px-4">
     <div className="d-flex justify-content-between">
       <div className="d-flex flex-column gap-4">
         <h1>Insights</h1>

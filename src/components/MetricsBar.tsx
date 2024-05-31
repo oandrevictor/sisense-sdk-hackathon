@@ -4,7 +4,7 @@ import { Admissions, DataSource, Diagnosis, ER } from "../healthcare";
 import Metric from "./Metric";
 import { FaBedPulse, FaClipboardList, FaCross, FaFolder } from "react-icons/fa6";
 
-function pullNumbers(data: QueryResultData | undefined, loading: boolean) {
+export function pullNumbers(data: QueryResultData | undefined, loading: boolean) {
   const value = loading ? 0 : data?.rows[0][1].data || 0;
   const update = loading ? 0 : data?.rows[1][1].data - value;
   const status = update > 0;

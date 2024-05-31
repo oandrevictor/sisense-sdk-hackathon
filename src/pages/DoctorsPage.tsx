@@ -12,14 +12,17 @@ export default function DoctorsPage() {
     return null;
   };
 
-  return <div className="d-flex flex-column px-3 py-4 bg-white rounded shadow-sm overflow-hidden">
-    <div className="d-flex gap-5">
-      <div className="w-50" style={{ minHeight: 400 }}>
+  return <div className="px-4">
+    <h1>Doctors</h1>
+
+    <div className="d-flex px-3 py-4 bg-white rounded shadow-sm overflow-hidden gap-2">
+      <div className="flex-grow-1">
         <h5>Doctors {division ? `(${division})` : ''}</h5>
 
         <Table
           dataSet={DataSource}
           styleOptions={{
+            height: 400,
             header: {
               color: {
                 textColor: 'black',
@@ -42,11 +45,12 @@ export default function DoctorsPage() {
           filters={division ? [filterFactory.equals(Divisions.Divison_name, division)] : []} />
       </div>
 
-      <div style={{ width: 400, height: 400 }} >
+      <div>
         <h5>Cases per Division</h5>
 
         <PieChart
           dataSet={DataSource}
+          styleOptions={{ height: 400, width: 400 }}
           dataOptions={{
             category: [Divisions.Divison_name],
             value: [measureFactory.sum(Admissions.ID, 'Cases')],
