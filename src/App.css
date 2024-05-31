@@ -1,3 +1,6 @@
+body {
+  background: rgb(251, 251, 251);
+}
 :root {
   --width-sidebar: 250px;
 }
@@ -20,7 +23,10 @@
 /* Sidebar */
 .sidebar {
   width: var(--width-sidebar);
-  background-color: rgb(233 238 243);
+  height: 100vh !important;
+  position:sticky;
+  top:0px;
+  background: rgb(251, 251, 251);
 }
 
 .page-link {
@@ -34,7 +40,7 @@
 
 /* Content */
 .page-content {
-  width: calc(100% - var(--width-sidebar));
+  width: 100%;
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;

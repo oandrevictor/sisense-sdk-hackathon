@@ -35,12 +35,12 @@ function App() {
   const [page, setPage] = useState(pages[0]);
 
   return (
-    <div className="layout d-flex">
+    <div className="d-flex">
       <Sidebar pages={pages} active={page} onChange={page => setPage(page)} />
 
       <div className="page-content px-4 py-4 d-flex flex-column position-relative">
         <div className="color-background position-absolute" />
-        <div className="mb-3 text-black-50"><span className="body-xs">/</span> {page.label}</div>
+        <div className="mb-3"></div>
 
         {page.component}
       </div>

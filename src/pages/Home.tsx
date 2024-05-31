@@ -35,7 +35,8 @@ export default function Home() {
   return (<div className="d-flex flex-column gap-4 px-4">
     <div className="header-with-filters d-flex justify-content-between">
       <div>
-        <h1>Insights</h1>
+        <h1>Hello,</h1>
+        <h6>Here are some insights about your facility.</h6>
         <div className="d-flex justify-content-between">
           <MetricsBar />
         </div>
@@ -66,32 +67,7 @@ export default function Home() {
 
 
     <div className="d-flex gap-3" style={{ minHeight: 350 }}>
-      <div style={{ width: '30%' }}>
-        <h3>Diseases status</h3>
-
-        <ScatterChart
-          dataSet={DataSource}
-          dataOptions={{
-            x: Diagnosis.Description,
-            y: measureFactory.count(Diagnosis.Description, 'Cases'),
-            breakByColor: Admissions.Death
-          }}
-        />
-      </div>
-
-      <div style={{ width: '30%' }}>
-        <h3>Time of stay per disease</h3>
-
-        <BoxplotChart
-          dataSet={DataSource}
-          dataOptions={{
-            category: [Diagnosis.Description],
-            value: [{ column: Admissions.TimeofStay, name: 'Time of Stay' }],
-            boxType: 'iqr',
-            outliersEnabled: true,
-          }}
-        />
-      </div>
+     
 
       <div style={{ width: '30%' }}>
         <h3>ER Waiting time</h3>
