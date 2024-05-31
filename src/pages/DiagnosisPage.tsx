@@ -3,6 +3,7 @@ import { BoxplotChart, DataPoint, DateRangeFilterTile, LineChart, PieChart } fro
 import { Admissions, DataSource, Diagnosis } from "../healthcare";
 import { useState } from "react";
 import DiagnosisMetricsBar from "../components/DiagnosisMetricsBar";
+import Page from "../components/Page";
 
 export default function DiagnosisPage() {
   const [diagnosis, setDiagnosis] = useState('');
@@ -10,13 +11,11 @@ export default function DiagnosisPage() {
 
   const handleFilter = (point: DataPoint) => {
     const value = point.seriesValue || point.categoryValue;
-    if (value) setDiagnosis(value === diagnosis ? '' : value as string);
+    if (value) setDiagnosis(diagnosis => value === diagnosis ? '' : value as string);
     return null;
   };
 
-  return <div className="d-flex flex-column gap-4 px-4">
-    <h1>Diagnosis</h1>
-
+  return <Page title="Diagnosis">
     <div className="d-flex justify-content-between align-items-end">
       <DiagnosisMetricsBar />
 
@@ -33,7 +32,7 @@ export default function DiagnosisPage() {
 
     <div className="d-flex flex-column px-3 py-4 bg-white rounded shadow-sm overflow-hidden">
       <div className="w-100">
-        <h5>Diagnosis Occurrences Over Time</h5>
+        <h5>{diagnosis ? diagnosis : 'Diagnosis'} Occurrences Over Time</h5>
 
         <LineChart
           dataSet={DataSource}
@@ -52,21 +51,21 @@ export default function DiagnosisPage() {
 
       <div className="d-flex mt-2">
         <div className="flex-grow-1">
-          <h5>Time of stay per diagnosis</h5>
+          <h5>Time of stay {diagnosis ? `for ${diagnosis}` : 'per diagnosis'}</h5>
 
           <BoxplotChart
             dataSet={DataSource}
-            styleOptions={{ height: 300 }}
+            styleOptions={{ height: 400 }}
             dataOptions={{
               category: [Diagnosis.Description],
               value: [{
                 column: Admissions.TimeofStay,
                 name: 'Time of Stay',
                 numberFormatConfig: {
-                  name: 'Numbers',
+                  name: 'Currency',
                   decimalScale: 0,
                   prefix: false,
-                  symbol: 'days'
+                  symbol: ' minutes'
                 }
               }],
               boxType: 'iqr',
@@ -81,7 +80,7 @@ export default function DiagnosisPage() {
 
           <PieChart
             dataSet={DataSource}
-            styleOptions={{ height: 300, width: 400 }}
+            styleOptions={{ height: 400, width: 500 }}
             dataOptions={{
               category: [Diagnosis.Description],
               value: [measureFactory.aggregate(Admissions.Death, 'count', 'Deaths')],
@@ -92,5 +91,5 @@ export default function DiagnosisPage() {
         </div>
       </div>
     </div>
-  </div>;
+  </Page>;
 }

@@ -1,8 +1,9 @@
 import { QueryResultData, filterFactory, measureFactory } from "@sisense/sdk-data";
 import { useExecuteQuery } from "@sisense/sdk-ui";
+import { FaBedPulse, FaClipboardList, FaFolder } from "react-icons/fa6";
 import { Admissions, DataSource, Diagnosis, ER } from "../healthcare";
 import Metric from "./Metric";
-import { FaBedPulse, FaClipboardList, FaCross, FaFolder } from "react-icons/fa6";
+import { PAST_MONTH_DATE_START, PAST_WEEK_DATE_START } from "../utils/DateUtils";
 
 export function pullNumbers(data: QueryResultData | undefined, loading: boolean) {
   const value = loading ? 0 : data?.rows[0][1].data || 0;
@@ -17,7 +18,7 @@ export default function MetricsBar() {
     dataSource: DataSource,
     dimensions: [Admissions.Admission_Time.Weeks],
     measures: [measureFactory.count(Diagnosis.ID, 'total')],
-    filters: [filterFactory.dateFrom(Admissions.Admission_Time.Weeks, '2013-06-13T00:00:00')],
+    filters: [filterFactory.dateFrom(Admissions.Admission_Time.Weeks, PAST_WEEK_DATE_START)],
   });
   const [diagnosis, diagnosisUpdate, diagnosisStatus] = pullNumbers(diagData, diagLoading);
 
@@ -25,7 +26,7 @@ export default function MetricsBar() {
     dataSource: DataSource,
     dimensions: [ER.Date.Months],
     measures: [measureFactory.count(ER.ID, 'total')],
-    filters: [filterFactory.dateFrom(ER.Date.Months, '2013-05-01T00:00:00')],
+    filters: [filterFactory.dateFrom(ER.Date.Months, PAST_MONTH_DATE_START)],
   });
   const [erAdmissions, erUpdate, erStatus] = pullNumbers(erData, erLoading);
 
@@ -33,17 +34,9 @@ export default function MetricsBar() {
     dataSource: DataSource,
     dimensions: [Admissions.Admission_Time.Months],
     measures: [measureFactory.count(Admissions.ID, 'total')],
-    filters: [filterFactory.dateFrom(Admissions.Admission_Time.Months, '2013-05-01T00:00:00')],
+    filters: [filterFactory.dateFrom(Admissions.Admission_Time.Months, PAST_MONTH_DATE_START)],
   });
   const [admissions, admissionsUpdate, admissionsStatus] = pullNumbers(admissionsData, admissionsLoading);
-
-  const { data: tosData, isLoading: tosLoading } = useExecuteQuery({
-    dataSource: DataSource,
-    dimensions: [Admissions.Admission_Time.Months],
-    measures: [measureFactory.average(Admissions.TimeofStay, 'avg stay')],
-    filters: [filterFactory.dateFrom(Admissions.Admission_Time.Months, '2013-05-01T00:00:00')],
-  });
-  const [timeOfStay, tosUpdate, tosStatus] = pullNumbers(tosData, tosLoading);
 
   const metrics = [
     {

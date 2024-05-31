@@ -3,6 +3,7 @@ import { DataPoint, PieChart, Table, TreemapChart } from "@sisense/sdk-ui";
 import { useState } from "react";
 import { Admissions, DataSource, Divisions, Doctors } from "../healthcare";
 import { CURRENCY } from "../utils/Formats";
+import Page from "../components/Page";
 
 export default function DoctorsPage() {
   const [division, setDivision] = useState('');
@@ -13,9 +14,7 @@ export default function DoctorsPage() {
     return null;
   };
 
-  return <div className="px-4">
-    <h1>Doctors</h1>
-
+  return <Page title="Doctors">
     <div className="d-flex px-3 py-4 bg-white rounded shadow-sm overflow-hidden gap-2">
       <div className="flex-grow-1">
         <h5>Doctors {division ? `(${division})` : ''}</h5>
@@ -76,5 +75,5 @@ export default function DoctorsPage() {
         }}
       />
     </div>
-  </div>;
+  </Page>;
 }

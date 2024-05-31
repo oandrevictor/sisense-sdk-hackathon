@@ -1,12 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
-import { FaBed, FaChartPie, FaClipboardUser, FaHouse, FaUsers } from 'react-icons/fa6';
+import { FaBed, FaClipboardUser, FaHouse, FaUsers } from 'react-icons/fa6';
 import './App.css';
 import Sidebar, { Page } from './components/Sidebar';
+
 import DiagnosisPage from './pages/DiagnosisPage';
 import DoctorsPage from './pages/DoctorsPage';
-import PatientsPage from './pages/PatientsPage';
 import Home from './pages/Home';
+import PatientsPage from './pages/PatientsPage';
 
 const pages: Page[] = [
   {

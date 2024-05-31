@@ -1,11 +1,11 @@
-import { Filter, measureFactory, filterFactory, Attribute, Column } from "@sisense/sdk-data";
-import { LineChart, BarChart, PieChart, ScatterChart, BoxplotChart, HighchartsOptions, MemberFilterTile, DateRangeFilterTile, ColumnChart } from "@sisense/sdk-ui";
-import { DataSource, Rooms, Admissions, Doctors, Diagnosis, ER, Divisions, Conditionstimeofstay } from "../healthcare";
+import { Filter, filterFactory, measureFactory } from "@sisense/sdk-data";
+import { DateRangeFilterTile } from "@sisense/sdk-ui";
 import { useMemo, useState } from "react";
-import { ChartWithBreakdown, Granularity } from "../components/ChartWithBreakdown";
-import React from 'react';
 import Select from 'react-select';
+import { ChartWithBreakdown, Granularity } from "../components/ChartWithBreakdown";
 import MetricsBar from "../components/MetricsBar";
+import { Admissions, DataSource, ER } from "../healthcare";
+import Page from "../components/Page";
 
 const granOptions = [
   { value: 'Days', label: 'Days' },
@@ -24,14 +24,10 @@ export default function Home() {
   const filters = useMemo(() => categoryFilter ? [dateRangeFilter, categoryFilter] : [dateRangeFilter],
     [categoryFilter, dateRangeFilter]);
 
-  return (<div className="d-flex flex-column gap-4 px-4">
+  return (<Page title="Insights">
     <div className="header-with-filters d-flex justify-content-between">
-      <div>
-        <h1 className="mb-4">Insights</h1>
-        <div className="d-flex justify-content-between">
-          <MetricsBar />
-        </div>
-      </div>
+      <MetricsBar />
+
       <div className="d-flex align-items-end justify-content-end gap-1" >
         <DateRangeFilterTile
           title="Date Range"
@@ -42,7 +38,7 @@ export default function Home() {
             setDateRangeFilter(filter);
           }}
         />
-        <div className="d-flex gap-2 gran-select align-items-center"> <span className="text-light">grouped by</span> <Select options={granOptions} defaultValue={granOptions[2]} onChange={(e) => setGranularity((gran) => e?.value ? e.value as Granularity : gran)} /> </div>
+        <div className="d-flex gap-2 gran-select align-items-center"> <span className="text-light">Grouped by</span> <Select options={granOptions} defaultValue={granOptions[2]} onChange={(e) => setGranularity((gran) => e?.value ? e.value as Granularity : gran)} /> </div>
       </div>
     </div>
 
@@ -51,12 +47,12 @@ export default function Home() {
     </div>
 
     <div>
-    <ChartWithBreakdown filters={filters} granularity={granularity} title="ER Cases" value={measureFactory.count(ER.ID, 'Total')} relatedPage="ER" category={ER.Date} />
+      <ChartWithBreakdown filters={filters} granularity={granularity} title="ER Cases" value={measureFactory.count(ER.ID, 'Total')} relatedPage="ER" category={ER.Date} />
     </div>
 
     <div>
       <ChartWithBreakdown filters={filters} granularity={granularity} title="Deaths" fixedFilter={filterFactory.equals(Admissions.Death, 'Yes')} value={measureFactory.count(Admissions.Death, 'Deaths')} category={Admissions.Admission_Time} />
     </div>
-   
-  </div>);
+
+  </Page>);
 }

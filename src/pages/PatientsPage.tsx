@@ -5,6 +5,7 @@ import { DropdownButton, Form, InputGroup } from "react-bootstrap";
 import ReactSelect from "react-select";
 import { Admissions, DataSource, Patients } from "../healthcare";
 import { CURRENCY } from "../utils/Formats";
+import Page from "../components/Page";
 
 const genderFilterOptions = [
   {
@@ -31,10 +32,8 @@ export default function PatientsPage() {
     debounce.current = setTimeout(() => setSearch(search), DEBOUNCE);
   };
 
-  return (<div className="px-4">
-    <div className="d-flex align-items-end justify-content-between">
-      <h1>Patients</h1>
-
+  return (<Page title="Patients" filters={
+    <div className="d-flex align-items-end mt-3">
       <div className="pb-2">
         <span className="text-black-50 body-xs">Admitted in</span>
         <DateRangeFilterTile
@@ -48,6 +47,7 @@ export default function PatientsPage() {
         />
       </div>
     </div>
+    }>
 
     <div className="d-flex px-3 py-4 bg-white rounded shadow-sm overflow-hidden gap-2">
       <div className="flex-grow-1">
@@ -106,5 +106,5 @@ export default function PatientsPage() {
           ]} />
       </div>
     </div>
-  </div>);
+  </Page>);
 }
