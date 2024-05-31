@@ -1,30 +1,38 @@
-# React + TypeScript + Vite
+### Sisense Hackaton Project
+Project developed for Sisense [Analytics in Action: A compose SDK hackaton](https://www.sisense.com/platform/compose-sdk/hackathon/)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Using [Sisense SDK](https://sisense.dev/guides/sdk/getting-started/) and [Vite](https://vitejs.dev/)
 
-Currently, two official plugins are available:
+Developed by:
+- [André Andrade](https://github.com/oandrevictor)
+- [Eric Santos](https://github.com/ericbreno)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### How to run
 
-## Expanding the ESLint configuration
+#### Prerequisites
+- Node v19.7.0 or greater
+- npm v9.5.0 or greater
+- Have a Compose SDK token ([get a 30-day free trial here](https://www.sisense.com/platform/compose-sdk-free-trial/))
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+1. Run `$ npm install`
+2. Add your Compose SDK token in `/src/index.tsx` `token` parameter:
+```tsx
+<SisenseContextProvider
+  url="https://trial-bi-prod.sisense.com/"
+  token="<token here">
 ```
+3. Run `$ npm run dev`
+4. Access the page locally at `http://localhost:5173/#`
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Folder structure
+
+All code is under the `/src` folder:
+
+- `/src/index.tsx` app entrypoint, where Sisense context is bootstraped 
+- `/src/App.tsx` app base page, holding shared layout elements (like the sidebar)
+- `/src/pages` each application page will be a component in this folder
+- `/src/components` components used by the pages
+- `/src/utils` shared functions and variables used across the project
+- `/src/app.css` styles for the project
+
+
