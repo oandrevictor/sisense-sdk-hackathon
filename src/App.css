@@ -65,3 +65,7 @@
 [data-type="pie"] > div {
   margin-top: -1em;
 }
+
+.nav-link.active {
+  background-color: rgb(146, 195, 247)!important;
+}

@@ -15,6 +15,11 @@ const pages: Page[] = [
     component: <Home />
   },
   {
+    label: 'Insights',
+    icon: <FaChartPie />,
+    component: <Charts />
+  },
+  {
     label: 'Diagnosis',
     icon: <FaClipboardUser />,
     component: <DiagnosisPage />
@@ -23,12 +28,8 @@ const pages: Page[] = [
     label: 'Doctors',
     icon: <FaUsers />,
     component: <DoctorsPage />
-  },
-  {
-    label: 'Insights',
-    icon: <FaChartPie />,
-    component: <Charts />
   }
+  
 ]
 
 function App() {
