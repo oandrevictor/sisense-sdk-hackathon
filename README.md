@@ -35,4 +35,19 @@ All code is under the `/src` folder:
 - `/src/utils` shared functions and variables used across the project
 - `/src/app.css` styles for the project
 
+### Application
+**Home Page**  
+Here you have some quick insights about how your hospital is performing and more important metrics. Filter data by a date range, change aggregation granularity and break charts down to get more insights.
+![Home Page screenshot](./public/home-page.png)
 
+**Diagnosis insights**  
+Dive into the diagnosis evolutions, how long are the stays, you can click on a diagnosis to explore it's data or filter by date range.
+![Diagnosis insights](./public/diagnosis-page.png)
+
+**Doctors insights**  
+Data about how doctors are performing, cases they have been working and divisions where the hospital's revenue is coming from
+![Doctors insights](./public/doctors-page.png)
+
+**Patients insights**  
+List of patients where you can check some quick info on them and filter by name or gender
+![Patients insights](./public/patients-page.png)
